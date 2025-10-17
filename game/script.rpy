@@ -2,8 +2,25 @@
 define e = Character('Незнакомка', color="#291246")
 define g = Character('...', color="#581C1C")
 
+
 # Игра начинается здесь:
 label start:
+
+    python:
+        def show_image(x):
+            image_map = {
+                0: "tabs0.png",
+                1: "tabs1.png",
+                2: "tabs2.png",
+                3: "tabs3.png",
+                4: "tabs4.png",
+                5: "tabs5.png",
+                6: "tabs6.png"
+            }
+            
+            return image_map.get(x, None)
+
+
     scene kill
     play sound "scream.mp3"
 
@@ -34,14 +51,14 @@ label start:
 menu:
 
     "Хорошо.":
-        jump choice1_no
+        jump choice1_yes
 
     "Нет.":
         jump choice_death
 
-label choice1_no:
+label choice1_yes:
 
-    $ menu_flag = False
+    $ tabs = 6
 
     jump choice1_done
 
@@ -49,17 +66,42 @@ label choice1_done:
 
     # ... the game continues here.
  
+    # добавление таблеток
+    $ image_name = show_image(tabs)
+    show image image_name:
+        xalign 1.2
+        yalign 1.15
 
     #Герой (недоверчиво): 
-    g "Кто вы такая? Где моя семья? Что с ними?"
+
+menu:
+
+    "Кто вы такая? Где моя семья? Что с ними?":
+        jump choice2_done
+
+    "Это ты убила их!!":
+        jump choice2_yes
+
+label choice2_yes:
+
+    $ tabs -= 1
+
+    jump choice2_done
+
+label choice2_done:
 
     #Незнакомка: 
+    hide image image_name
+    $ image_name = show_image(tabs)
+    show image image_name:
+        xalign 1.2
+        yalign 1.15
+
     show sorry:
         xalign 0.0
         yalign 1.0
 
     e "Ваша семья… Они в безопасности. А я — ваш врач, я помогаю вам восстановиться."
-
 
     #Герой: 
     g "Восстановить что? Я не понимаю, что происходит!"
@@ -128,11 +170,18 @@ label choice1_done:
     #Незнакомка: 
     e "Да, здесь всегда спокойно. Это место помогает исцелиться."
 
+    jump titles
 
 label choice_death:
 
     scene doctors
 
     g "Что... происходит..."
+
+    jump titles
+
+label titles:
+
+    scene black
 
     return
