@@ -125,6 +125,20 @@ label choice2_done:
     e "Недолго. Но вам нужно отдохнуть."
 
 
+
+    call screen example_screen
+
+label news:
+    screen example_screen():
+    # Создаём imagebutton с изображением для состояния idle и hover
+        imagebutton:
+            idle "news.png"  # Изображение для состояния покоя
+            hover "newsb.png"  # Изображение для состояния наведения
+            action Jump("choice_death")  # Действие при нажатии
+            xpos 100  # Позиция по X
+            ypos 100  # Позиция по Y
+ 
+label continue:
     #Герой: 
     g "Почему я не помню ничего? Где мы находимся?"
 
@@ -176,6 +190,8 @@ label choice_death:
 
     scene doctors
 
+    pause (5)
+
     g "Что... происходит..."
 
     jump titles
@@ -183,5 +199,7 @@ label choice_death:
 label titles:
 
     scene black
+
+    pause (5)
 
     return
